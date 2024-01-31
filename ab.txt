@@ -1,0 +1,20 @@
+# Check if Git is installed
+if (-not (Test-Path "$(Get-Command git -ErrorAction SilentlyContinue)")) {
+    
+    # URL for Git installer
+    $gitInstallerUrl = "https://gitforwindows.org/download/win/git-2.37.0-64-bit.exe"
+
+    # Download Git installer
+    $gitInstallerPath = Join-Path $env:TEMP "GitInstaller.exe"
+    Invoke-WebRequest -Uri $gitInstallerUrl -OutFile $gitInstallerPath
+
+    # Install Git silently
+    Start-Process -FilePath $gitInstallerPath -ArgumentList "/SILENT" -Wait
+
+    # Remove the downloaded installer
+    Remove-Item -Path $gitInstallerPath -Force
+
+    Write-Host "Git installed successfully."
+} else {
+    Write-Host "Git is already installed."
+}
